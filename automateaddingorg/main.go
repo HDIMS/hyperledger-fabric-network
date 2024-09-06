@@ -21,7 +21,14 @@ func createFile(name string, content string) (*os.File, error) {
 }
 
 func main() {
-	fabricCaServerConfigEditor("HOSP1CA", "ca-hosp1", "INDIA", "CG", "RAIPUR", "hehe.hosp1.com")
-	caOrg1Editor("ca-hosp1", "hosp1")
-	caOrg1ServiceEditor("ca-hosp1", "hosp1")
+	hosp := os.Args[1]
+	hospca := os.Args[2]
+	cahosp := os.Args[3]
+	country := os.Args[4]
+	state := os.Args[5]
+	city := os.Args[6]
+	domain := os.Args[7]
+	fabricCaServerConfigEditor(hospca, cahosp, country, state, city, domain)
+	caOrg1Editor(cahosp, hosp)
+	caOrg1ServiceEditor(cahosp, hosp)
 }
