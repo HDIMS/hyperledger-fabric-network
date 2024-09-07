@@ -28,7 +28,10 @@ func main() {
 	state := os.Args[5]
 	city := os.Args[6]
 	domain := os.Args[7]
+	port := os.Args[8]
 	fabricCaServerConfigEditor(hospca, cahosp, country, state, city, domain)
 	caOrg1Editor(cahosp, hosp)
 	caOrg1ServiceEditor(cahosp, hosp)
+	createCerts_sh(domain, cahosp, port, hosp)
+	createJob_org(hosp)
 }
