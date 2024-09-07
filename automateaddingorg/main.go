@@ -31,7 +31,7 @@ func main() {
 	port := os.Args[8]
 	fabricCaServerConfigEditor(hospca, cahosp, country, state, city, domain)
 	caOrg1Editor(cahosp, hosp)
-	caOrg1ServiceEditor(cahosp, hosp)
+	caOrg1ServiceEditor(cahosp, hosp, port)
 	createCerts_sh(domain, cahosp, port, hosp)
 	createJob_org(hosp)
 }

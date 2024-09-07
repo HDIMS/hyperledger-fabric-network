@@ -6,20 +6,13 @@ import (
 
 func createCerts_sh(domain string, caorg string, port string, hosp string) {
 	filecont := `set -x
+mkdir -p /organizations/peerOrganizations/` + domain + `/
+export FABRIC_CA_CLIENT_HOME=/organizations/peerOrganizations/` + domain + `/	
+fabric-ca-client enroll -u https://admin:adminpw@` + caorg + `:` + port + ` --caname ` + caorg + ` --tls.certfiles "/organizations/fabric-ca/` + hosp + `/tls-cert.pem"
 
-	mkdir -p /organizations/peerOrganizations/` + domain + `/
-	
-	export FABRIC_CA_CLIENT_HOME=/organizations/peerOrganizations/` + domain + `/
-	
-	
-	
-	fabric-ca-client enroll -u https://admin:adminpw@` + caorg + `:` + port + ` --caname ` + caorg + ` --tls.certfiles "/organizations/fabric-ca/` + hosp + `/tls-cert.pem"
-	
-	
-	
-	echo 'NodeOUs:
-	  Enable: true
-	  ClientOUIdentifier:
+echo 'NodeOUs:
+Enable: true
+	ClientOUIdentifier:
 		Certificate: cacerts/` + caorg + `-` + port + `-` + caorg + `.pem
 		OrganizationalUnitIdentifier: client
 	  PeerOUIdentifier:
@@ -96,44 +89,44 @@ func createCerts_sh(domain string, caorg string, port string, hosp string) {
 
 func createJob_org(hosp string) {
 	filecont := `apiVersion: batch/v1
-	kind: Job
-	metadata:
-	  name: create-certs-` + hosp + `
-	spec:
-	  parallelism: 1
-	  completions: 1
-	  template:
-		metadata:
-		  name: create-certs-` + hosp + `
-		spec:
-		  volumes:
-			- name: fabricfiles
-			  persistentVolumeClaim:
-				claimName: mypvc
-		  containers:
-			- name: create-certs-` + hosp + `
-			  image: hyperledger/fabric-ca-tools:latest
-			  resources:
-				requests:
-				  memory: "300Mi"
-				  cpu: "300m"
-				limits:
-				  memory: "500Mi"
-				  cpu: "350m"
-			  volumeMounts:
-				- mountPath: /organizations
-				  name: fabricfiles
-				  subPath: organizations
-				- mountPath: /scripts
-				  name: fabricfiles
-				  subPath: scripts
-			  command:
-				- /bin/sh
-				- -c
-				- |
-				  ./scripts/` + hosp + `-certs.sh
-		  restartPolicy: Never
-	`
+kind: Job
+metadata:
+  name: create-certs-` + hosp + `
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: create-certs-` + hosp + `
+    spec:
+      volumes:
+        - name: fabricfiles
+          persistentVolumeClaim:
+            claimName: mypvc
+      containers:
+        - name: create-certs-` + hosp + `
+          image: hyperledger/fabric-ca-tools:latest
+          resources:
+            requests:
+              memory: "300Mi"
+              cpu: "300m"
+            limits:
+              memory: "500Mi"
+              cpu: "350m"
+          volumeMounts:
+            - mountPath: /organizations
+              name: fabricfiles
+              subPath: organizations
+            - mountPath: /scripts
+              name: fabricfiles
+              subPath: scripts
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ./scripts/` + hosp + `-certs.sh
+      restartPolicy: Never
+`
 	output, err := createFile(hosp+"-job.yaml", filecont)
 	if err != nil {
 		fmt.Println("Error creating file:", err)

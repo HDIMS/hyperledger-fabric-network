@@ -70,7 +70,7 @@ cp fabric-ca-server-config.yaml "../fabric-ca/$hosp/"
 cp ca-"$hosp".yaml "../caserver_k8s/"
 cp ca-"$hosp"-service.yaml "../caserver_k8s/"
 cp "$hosp"-certs.sh "../scripts/"
-cp "$hosp"-job.yaml "../certificates_k8s"
+cp "$hosp"-job.yaml "../certificates_k8s/"
 
 rm fabric-ca-server-config.yaml
 rm ca-"$hosp".yaml
@@ -79,7 +79,12 @@ rm "$hosp"-certs.sh
 rm "$hosp"-job.yaml
 
 # Display the details of the moved files
-echo "Details of the moved files:"
-ls -l "../fabric-ca/"
-ls -l "../caserver_k8s/"
-ls -l "../certificates_k8s"
+# echo "Details of the moved files:"
+# ls -l "../fabric-ca/"
+# ls -l "../caserver_k8s/"
+# ls -l "../certificates_k8s"
+
+kubectl apply -f ../caserver_k8s/ca-"$hosp".yaml
+kubectl apply -f ../caserver_k8s/ca-"$hosp"-service.yaml
+
+kubectl apply -f ../certificates_k8s/"$hosp"-job.yaml
