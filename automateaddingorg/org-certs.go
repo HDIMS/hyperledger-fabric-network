@@ -67,7 +67,7 @@ Enable: true
 	cp "/organizations/peerOrganizations/` + domain + `/peers/peer0.` + domain + `/msp/cacerts/"* "/organizations/peerOrganizations/` + domain + `/ca/ca.` + domain + `-cert.pem"
 	
 	
-	fabric-ca-client enroll -u https://user1:user1pw@` + caorg + `:` + port + ` --caname ca-org1 -M "/organizations/peerOrganizations/` + domain + `/users/User1@` + domain + `/msp" --tls.certfiles "/organizations/fabric-ca/` + hosp + `/tls-cert.pem"
+	fabric-ca-client enroll -u https://user1:user1pw@` + caorg + `:` + port + ` --caname ` + caorg + ` -M "/organizations/peerOrganizations/` + domain + `/users/User1@` + domain + `/msp" --tls.certfiles "/organizations/fabric-ca/` + hosp + `/tls-cert.pem"
 	
 	cp "/organizations/peerOrganizations/` + domain + `/msp/config.yaml" "/organizations/peerOrganizations/` + domain + `/users/User1@` + domain + `/msp/config.yaml"
 	

@@ -87,4 +87,6 @@ rm "$hosp"-job.yaml
 kubectl apply -f ../caserver_k8s/ca-"$hosp".yaml
 kubectl apply -f ../caserver_k8s/ca-"$hosp"-service.yaml
 
+chmod +x ../scripts/"$hosp"-certs.sh
+
 kubectl apply -f ../certificates_k8s/"$hosp"-job.yaml

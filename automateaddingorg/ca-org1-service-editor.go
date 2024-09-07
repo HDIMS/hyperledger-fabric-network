@@ -17,8 +17,8 @@ spec:
     app: ` + caorg1 + `
   ports:
     - protocol: TCP
-      targetPort: ` + port + `
-      port: ` + port + `
+      targetPort: ` + `8054` + `
+      port: ` + `8054` + `
 `
 	// Call createFile to write content to the file
 	output, err := createFile("ca-"+org1+"-service.yaml", filecont)
