@@ -89,6 +89,14 @@ echo $FABRIC_CA_CLIENT_HOME
   mkdir -p organizations/ordererOrganizations/example.com/users/Admin@example.com
 
 
+  echo "Generate the admin msp"
+  set -x
+  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@ca-orderer:10054 --caname ca-orderer -M /organizations/ordererOrganizations/example.com/users/Admin@example.com/msp --tls.certfiles /organizations/fabric-ca/ordererOrg/tls-cert.pem
+  { set +x; } 2>/dev/null
+
+  cp /organizations/ordererOrganizations/example.com/msp/config.yaml /organizations/ordererOrganizations/example.com/users/Admin@example.com/msp/config.yaml
+
+
   # -----------------------------------------------------------------------
   #  Orderer 2
 
@@ -206,10 +214,3 @@ echo $FABRIC_CA_CLIENT_HOME
   cp /organizations/ordererOrganizations/example.com/orderers/orderer5.example.com/tls/tlscacerts/* /organizations/ordererOrganizations/example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 
-
-  echo "Generate the admin msp"
-  set -x
-  fabric-ca-client enroll -u https://ordererAdmin:ordererAdminpw@ca-orderer:10054 --caname ca-orderer -M /organizations/ordererOrganizations/example.com/users/Admin@example.com/msp --tls.certfiles /organizations/fabric-ca/ordererOrg/tls-cert.pem
-  { set +x; } 2>/dev/null
-
-  cp /organizations/ordererOrganizations/example.com/msp/config.yaml /organizations/ordererOrganizations/example.com/users/Admin@example.com/msp/config.yaml
